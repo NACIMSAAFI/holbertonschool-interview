@@ -1,0 +1,29 @@
+#!/usr/bin/python3
+
+
+def canUnlockAll(boxes):
+    """
+    Determines if all boxes can be unlocked.
+
+    Parameters:
+        boxes (list of list of int): A list of lists where each sublist contains keys to other boxes.
+
+    Returns:
+        bool: True if all boxes can be opened, else False.
+    """
+    n = len(boxes)  # Number of boxes
+    unlocked = [False] * n  # Keep track of which boxes are unlocked
+    unlocked[0] = True  # We can always open the first box
+    queue = [0]  # Start with the first box in the queue
+
+    while queue:
+        box = queue.pop(0)  # Get the current box
+        # Iterate over all the keys in the current box
+        for key in boxes[box]:
+            if (
+                key < n and not unlocked[key]
+            ):  # Check if the box to unlock is within range and not yet unlocked
+                unlocked[key] = True  # Mark the box as unlocked
+                queue.append(key)  # Add the newly unlocked box to the queue
+
+    return all(unlocked)  # Check if all boxes are unlocked
