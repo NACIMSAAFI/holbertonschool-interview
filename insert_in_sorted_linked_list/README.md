@@ -4,7 +4,6 @@
 
 This project is a technical interview preparation task focused on algorithms. The goal is to write a function in C that inserts a number into a sorted singly linked list. 
 
-- **Average Score**: 65.0%
 - **Difficulty**: Novice
 - **Project Badge**: [Link to Badge]
 - **Author**: Carrie Ybay, Software Engineer at Holberton School
