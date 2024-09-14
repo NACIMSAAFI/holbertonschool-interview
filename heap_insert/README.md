@@ -30,10 +30,10 @@ The `Heap Insert` project focuses on implementing and manipulating binary heaps.
 - Ensure that header files are include guarded.
 - * Example Files
 -Main Files: Provided main.c files are for testing purposes only. -They are not required to be pushed to your repository and may differ from the grading version.
-- **Data Structures**
+### Data Structures**
 Use the following data structures and types for binary trees. Include them in your header file:
 
-- **Basic Binary Tree**
+### Basic Binary Tree**
 
 /**
  * struct binary_tree_s - Binary tree node
