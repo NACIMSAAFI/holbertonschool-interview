@@ -10,16 +10,16 @@
  */
 size_t binary_tree_size(const binary_tree_t *tree)
 {
-    size_t size = 0;
+	size_t size = 0;
 
-    if (tree == NULL)
-        return (0);
+	if (tree == NULL)
+		return (0);
 
-    size++;
-    size += binary_tree_size(tree->left);
-    size += binary_tree_size(tree->right);
+	size++;
+	size += binary_tree_size(tree->left);
+	size += binary_tree_size(tree->right);
 
-    return (size);
+	return (size);
 }
 
 /**
@@ -29,11 +29,11 @@ size_t binary_tree_size(const binary_tree_t *tree)
  */
 void swap(int *parent, int *node)
 {
-    int tmp;
+	int tmp;
 
-    tmp = *node;
-    *node = *parent;
-    *parent = tmp;
+	tmp = *node;
+	*node = *parent;
+	*parent = tmp;
 }
 
 /**
@@ -45,23 +45,23 @@ void swap(int *parent, int *node)
  */
 heap_t *find_parent(heap_t *tree, int index, int size)
 {
-    heap_t *l_c, *r_c;
+	heap_t *l_c, *r_c;
 
-    if (index == size)
-        return (tree);
+	if (index == size)
+		return (tree);
 
-    if (index > size)
-        return (NULL);
+	if (index > size)
+		return (NULL);
 
-    l_c = find_parent(tree->left, 2 * index + 1, size);
-    r_c = find_parent(tree->right, 2 * index + 2, size);
+	l_c = find_parent(tree->left, 2 * index + 1, size);
+	r_c = find_parent(tree->right, 2 * index + 2, size);
 
-    if (l_c)
-        return (l_c);
-    else if (r_c)
-        return (r_c);
-    else
-        return (NULL);
+	if (l_c)
+		return (l_c);
+	else if (r_c)
+		return (r_c);
+	else
+		return (NULL);
 }
 
 /**
@@ -72,15 +72,15 @@ heap_t *find_parent(heap_t *tree, int index, int size)
  */
 heap_t *insert_node(heap_t *tree, heap_t *new)
 {
-    int size = binary_tree_size(tree);
-    heap_t *parent = find_parent(tree, 0, ((size - 1) / 2));
+	int size = binary_tree_size(tree);
+	heap_t *parent = find_parent(tree, 0, ((size - 1) / 2));
 
-    if (!parent->left)
-        parent->left = new;
-    else
-        parent->right = new;
+	if (!parent->left)
+		parent->left = new;
+	else
+		parent->right = new;
 
-    return (parent);
+	return (parent);
 }
 
 /**
@@ -91,23 +91,23 @@ heap_t *insert_node(heap_t *tree, heap_t *new)
  */
 heap_t *heap_insert(heap_t **root, int value)
 {
-    heap_t *new = binary_tree_node(NULL, value), *parent;
+	heap_t *new = binary_tree_node(NULL, value), *parent;
 
-    if (!root)
-        return (NULL);
-    if (!(*root))
-    {
-        *root = new;
-        return (new);
-    }
-    parent = insert_node(*root, new);
-    new->parent = parent;
+	if (!root)
+		return (NULL);
+	if (!(*root))
+	{
+		*root = new;
+		return (new);
+	}
+	parent = insert_node(*root, new);
+	new->parent = parent;
 
-    while (new->parent && new->n > new->parent->n)
-    {
-        swap(&new->parent->n, &new->n);
-        new = new->parent;
-    }
+	while (new->parent && new->n > new->parent->n)
+	{
+		swap(&new->parent->n, &new->n);
+		new = new->parent;
+	}
 
-    return (new);
+	return (new);
 }
