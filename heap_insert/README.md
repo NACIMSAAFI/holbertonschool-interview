@@ -51,8 +51,9 @@ Use the following data structures and types for binary trees. Include them in yo
         struct binary_tree_s *left;
         struct binary_tree_s *right;
     };
-```
+    ```
 
+    
 ### Max Binary Heap
 
 typedef struct binary_tree_s heap_t;
