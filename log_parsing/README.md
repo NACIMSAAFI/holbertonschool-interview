@@ -1,6 +1,3 @@
-# Curriculum
-## [C#22] Interview Preparation - Algorithms
-
 ### Project: Log Parsing
 **Author:** Alexa Orrico, Software Engineer at Holberton School  
 **Difficulty Level:** Amateur  
