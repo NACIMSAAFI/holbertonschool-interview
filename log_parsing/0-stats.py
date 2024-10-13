@@ -5,20 +5,14 @@ Log parsing algorithm that takes logs from stdin
 and shows the file size and the number of appearances of each
 type of error.
 """
+
+import re
 import sys
 
 
-def print_stats(file_size, status_codes):
-    """Prints the accumulated stats."""
-    print(f"File size: {file_size}")
-    for status in sorted(status_codes.keys()):
-        if status_codes[status] > 0:
-            print(f"{status}: {status_codes[status]}")
-
-
 def main():
-    file_size = 0
-    status_codes = {
+    """Main function"""
+    error_dict = {
         "200": 0,
         "301": 0,
         "400": 0,
@@ -28,36 +22,58 @@ def main():
         "405": 0,
         "500": 0,
     }
-    line_count = 0
+
+    num_lines = 0
+    file_size = 0
+
+    file_size_regex = r"\d{1,4}$"
+    error_regex = r"(?<=\s)\d{3}(?=\s\d{1,4}$)"
+    log_entry_regex = re.compile(r"""
+            .*\s-\s
+            \[
+            \d{4}-\d{1,2}-\d{1,2}
+            \s
+            \d{1,2}:\d{1,2}:\d{1,2}
+            \.\d{6}
+            \]\s
+            "GET\s\/projects\/260\sHTTP\/1\.1"
+            \s\d{3}\s
+            \d{1,4}
+        """, re.VERBOSE)
+    data = sys.stdin.read()
+
+    if data.strip() == "":
+        print("File size: 0")
+        return
+
+    lines = data.splitlines()
 
     try:
-        for line in sys.stdin:
-            line_count += 1
-            parts = line.split()
+        for line in lines:
+            if re.match(log_entry_regex, line):
+                num_lines += 1
+                file_size += int(re.search(file_size_regex, line).group())
+                error_code = re.search(error_regex, line).group()
+                error_dict[error_code] += 1
 
-            if len(parts) != 7:
-                continue  # Skip invalid lines
+                if num_lines == 10:
+                    print_stats(file_size, error_dict)
+                    num_lines = 0
 
-            ip_address = parts[0]
-            date = parts[2][1:-1]  # Remove brackets
-            request = parts[3]  # This will be "GET"
-            url = parts[4]  # The requested URL
-            protocol = parts[5]  # This will be "HTTP/1.1"
-            status_code = parts[6]
-            size = int(parts[7])
-
-            if status_code in status_codes:
-                status_codes[status_code] += 1
-                file_size += size
-
-            if line_count % 10 == 0:
-                print_stats(file_size, status_codes)
+        if num_lines > 0:
+            print_stats(file_size, error_dict)
 
     except KeyboardInterrupt:
-        print_stats(file_size, status_codes)
-        raise
+        print("\nExiting...")
+        print_stats(file_size, error_dict)
 
-    print_stats(file_size, status_codes)
+
+def print_stats(file_size, error_dict):
+    """Prints the accumulated statistics."""
+    print(f"File size: {file_size}")
+    for code, count in sorted(error_dict.items()):
+        if count > 0:
+            print(f"{code}: {count}")
 
 
 if __name__ == "__main__":
