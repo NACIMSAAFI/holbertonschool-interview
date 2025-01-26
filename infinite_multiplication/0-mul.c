@@ -1,52 +1,92 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <ctype.h>
 #include <string.h>
-#include "holberton.h"
-
+#include <stdlib.h>
+#include <stdio.h>
+#include <ctype.h>
 /**
- * is_number - Check if a string is a valid number
- * @str: The string to check
+ * _isnumber - checks if string is number
  *
- * Return: 1 if valid number, 0 if not
+ * @s: string
+ *
+ * Return: 1 if number, 0 if not
  */
-int is_number(char *str)
+int _isnumber(char *s)
 {
-	for (int i = 0; str[i] != '\0'; i++)
+	int i, check, d;
+
+	d = 0, check = 1;
+	for (i = 0; *(s + i) != 0; i++)
 	{
-		if (!isdigit(str[i]))
+		d = isdigit(*(s + i));
+		if (d == 0)
 		{
-			return (0);
+			check = 0;
+			break;
 		}
 	}
-	return (1);
+	return (check);
 }
 
 /**
- * main - Multiply two positive numbers
- * @argc: Argument count
- * @argv: Argument vector
+ * _callocX - reserves memory initialized to 0
  *
- * Return: 0 if successful, 98 if error occurs
+ * @nmemb: # of bytes
+ *
+ * Return: pointer
  */
-int main(int argc, char *argv[])
+char *_callocX(unsigned int nmemb)
 {
-	if (argc != 3)
+	unsigned int i;
+	char *p;
+
+	p = malloc(nmemb + 1);
+	if (p == 0)
+		return (0);
+	for (i = 0; i < nmemb; i++)
+		p[i] = '0';
+	p[i] = '\0';
+	return (p);
+}
+
+/**
+ * main - multiplies inf numbers
+ *
+ * @argc: # of cmd line args
+ * @argv: cmd line args
+ * Return: No return
+ */
+int main(int argc, char **argv)
+{
+	int i, j, l1, l2, lful, mul, add, ten, ten2, tl, zer = 0;
+	char *res;
+
+	if (argc != 3 || _isnumber(argv[1]) == 0 || _isnumber(argv[2]) == 0)
+		printf("Error\n"), exit(98);
+	if (atoi(argv[1]) == 0 || atoi(argv[2]) == 0)
+		printf("0\n"), exit(0);
+	l1 = strlen(argv[1]), l2 = strlen(argv[2]);
+	lful = l1 + l2;
+	res = _callocX(lful);
+	if (res == 0)
+		printf("Error\n"), exit(98);
+	for (i = l2 - 1; i >= 0; i--)
 	{
-		printf("Error\n");
-		exit(98);
+		ten = 0, ten2 = 0;
+		for (j = l1 - 1; j >= 0; j--)
+		{
+			tl = i + j + 1;
+			mul = (argv[1][j] - '0') * (argv[2][i] - '0') + ten;
+			ten = mul / 10;
+			add = (res[tl] - '0') + (mul % 10) + ten2;
+			ten2 = add / 10;
+			res[tl] = (add % 10) + '0';
+		}
+		res[tl - 1] = (ten + ten2) + '0';
 	}
-
-	if (!is_number(argv[1]) || !is_number(argv[2]))
-	{
-		printf("Error\n");
-		exit(98);
-	}
-
-	long num1 = atol(argv[1]);
-	long num2 = atol(argv[2]);
-
-	printf("%ld\n", num1 * num2);
-
+	if (res[0] == '0')
+		zer = 1;
+	for (; zer < lful; zer++)
+		printf("%c", res[zer]);
+	printf("\n");
+	free(res);
 	return (0);
 }
