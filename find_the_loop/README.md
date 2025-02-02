@@ -63,20 +63,17 @@ gcc -Wall -pedantic -Werror -Wextra 0-main.c 0-find_loop.c -L. -lloop -o main
 
 Alternatively, if you are using the lib.c file instead of the static library:
 
-bash
 ```
 gcc -Wall -pedantic -Werror -Wextra 0-main.c 0-find_loop.c lib.c -o main
 ```
 Run the program:
 
-bash
 ```
 ./main
 ```
 ## Example
 Given the following linked list with a loop:
 
-bash
 ```
 1 -> 2 -> 3 -> 4 -> 5
      ^              |
