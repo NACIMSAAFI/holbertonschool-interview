@@ -47,7 +47,7 @@ for (i = 1; i < 10; i++)
 count[i] += count[i - 1];
 
 /* Build the output array (must loop backwards to be stable sort) */
-for (int j = (int)(size - 1); j >= 0; j--)  /* Cast size_t to int for comparison */
+for (int j = (int)(size - 1); j >= 0; j--)
 {
 output[count[(array[j] / exp) % 10] - 1] = array[j];
 count[(array[j] / exp) % 10]--;
