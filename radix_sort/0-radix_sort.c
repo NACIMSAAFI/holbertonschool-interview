@@ -33,34 +33,35 @@ void counting_sort(int *array, size_t size, int exp)
 {
 int *output = malloc(sizeof(int) * size);
 int count[10] = {0};
-size_t j;
+size_t i;
 
 if (!output)
 return;
 
 /* Store count of occurrences in count[] */
-for (size_t i = 0; i < size; i++)
+for (i = 0; i < size; i++)
 count[(array[i] / exp) % 10]++;
 
 /* Change count[i] so count[i] contains actual position */
-for (size_t i = 1; i < 10; i++)
+for (i = 1; i < 10; i++)
 count[i] += count[i - 1];
 
 /* Build the output array (must loop backwards to be stable sort) */
-for (j = size - 1; j >= 0; j--)
+for (int j = (int)(size - 1); j >= 0; j--)  /* Cast size_t to int for comparison */
 {
 output[count[(array[j] / exp) % 10] - 1] = array[j];
 count[(array[j] / exp) % 10]--;
 }
 
 /* Copy output array back to original array */
-for (size_t i = 0; i < size; i++)
+for (i = 0; i < size; i++)
 array[i] = output[i];
 
-print_array(array, size);
+print_array(array, size); /* Assuming print_array is defined elsewhere */
 
 free(output);
 }
+
 
 /**
 * radix_sort - Sorts an array of integers in ascending order
